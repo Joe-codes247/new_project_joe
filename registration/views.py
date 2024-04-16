@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader #for routing your templates
+from django.views.decorators.csrf import csrf_exempt
+from .models import student
 def registration(request):
     return HttpResponse("Welcome to registration!")
 
@@ -20,12 +22,19 @@ def contacts(request):
     template = loader.get_template("contacts.html")
     return HttpResponse(template.render())
 
+@csrf_exempt
 def addstudent(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
-        query = Student(email=email, password=password)
+
+        mydata = {'email': email, 'password': password}
+        print(mydata)
+
+        query = student(email=email, password=password)
         query.save()
+#fetch the student data to be displayed
+
 
 
 
